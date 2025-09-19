@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace AP.DemoProject.Application.Interfaces {
     public interface ICityRepository : IGenericRepository<City> {
-
+        Task<IEnumerable<City>> GetAllSortByPopulation(int pageNr, int pageSize);
     }
 }

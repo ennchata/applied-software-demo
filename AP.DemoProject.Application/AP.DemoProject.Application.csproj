@@ -16,8 +16,4 @@
     <ProjectReference Include="..\AP.DemoProject.Domain\AP.DemoProject.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\" />
-  </ItemGroup>
-
 </Project>

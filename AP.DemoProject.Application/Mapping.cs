@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using AP.DemoProject.Application.CQRS.Cities;
+using AP.DemoProject.Application.CQRS.Countries;
+using AP.DemoProject.Domain;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +11,8 @@ using System.Threading.Tasks;
 namespace AP.DemoProject.Application {
     public class Mapping : Profile {
         public Mapping() {
-            throw new NotImplementedException();
+            CreateMap<City, CityDTO>();
+            CreateMap<Country, CountryDTO>();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace AP.DemoProject.Infrastructure.Extensions {
 
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

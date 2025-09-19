@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace AP.DemoProject.Infrastructure.Repositories {
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : class {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbContext _dbContext;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(DbContext dbContext) {
             _dbContext = dbContext;
