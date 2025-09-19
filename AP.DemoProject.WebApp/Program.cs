@@ -1,3 +1,5 @@
+using AP.DemoProject.Application.Extensions;
+using AP.DemoProject.Infrastructure.Extensions;
 using AP.DemoProject.WebApp.Components;
 
 namespace AP.DemoProject.WebApp {
@@ -6,6 +8,8 @@ namespace AP.DemoProject.WebApp {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.RegisterApplication();
+            builder.Services.RegisterInfrastructure();
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
