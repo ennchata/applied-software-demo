@@ -1,11 +1,8 @@
-using AP.DemoProject.WebApplication.Components;
+using AP.DemoProject.WebApp.Components;
 
-namespace AP.DemoProject.WebApplication
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace AP.DemoProject.WebApp {
+    public class Program {
+        public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -15,8 +12,7 @@ namespace AP.DemoProject.WebApplication
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
+            if (!app.Environment.IsDevelopment()) {
                 app.UseExceptionHandler("/Error");
             }
 
