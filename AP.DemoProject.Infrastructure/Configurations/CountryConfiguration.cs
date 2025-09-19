@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 namespace AP.DemoProject.Infrastructure.Configurations {
     public class CountryConfiguration : IEntityTypeConfiguration<Country> {
         public void Configure(EntityTypeBuilder<Country> builder) {
-            throw new NotImplementedException();
+            builder.HasKey(c => c.Id);
+            builder.HasIndex(c => c.Name)
+                .IsUnique(true);
         }
     }
 }

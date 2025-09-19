@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 namespace AP.DemoProject.Infrastructure.Configurations {
     public class CityConfiguration : IEntityTypeConfiguration<City> {
         public void Configure(EntityTypeBuilder<City> builder) {
-            throw new NotImplementedException();
+            builder.HasKey(c => c.Id);
+            builder.HasIndex(c => c.Name)
+                .IsUnique(true);
         }
     }
 }
