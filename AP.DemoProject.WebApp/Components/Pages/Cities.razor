@@ -1,5 +1,6 @@
 ﻿@page "/cities"
 @using MediatR
+@using AP.DemoProject.Application
 @using AP.DemoProject.Application.CQRS.Cities
 @using AP.DemoProject.Application.CQRS.Countries
 @inject IMediator _mediator
@@ -9,35 +10,50 @@
 <h1>Demo Project</h1>
 <h2>List of cities</h2>
 
-<table>
-	<tr>
-		<td>City Name</td>
-		<td>Population Name</td>
-		<td>Country Name</td>
-	</tr>
-	@foreach (CityDTO dto in CityDTOs) {
+@if (CitiesPage is null) {
+	<p>Loading...</p>
+} else {
+	<table>
 		<tr>
-			<td>@dto.Name</td>
-			<td>@dto.Population</td>
-			@if (CountryNames.TryGetValue(dto.CountryId, out string? countryName)) {
-				<td>@countryName</td>
-			} else {
-				<td>Unknown</td>
-			}
+			<td>City Name</td>
+			<td>Population Name</td>
+			<td>Country Name</td>
 		</tr>
-	}
-</table>
+		@foreach (CityDTO dto in CitiesPage.Data) {
+			<tr>
+				<td>@dto.Name</td>
+				<td>@dto.Population</td>
+				@if (CountryNames.TryGetValue(dto.CountryId, out string? countryName)) {
+					<td>@countryName</td>
+				} else {
+					<td>Unknown</td>
+				}
+			</tr>
+		}
+	</table>
+
+	<div>
+		@if (Page > 1) {
+			<NavLink style="padding-right: 1rem" href="@("cities?page=" + (Page - 1))">&lt;--</NavLink>
+		}
+		<span>Page @Page</span>
+		@if (Page < CitiesPage.TotalNumberOfPages) {
+			<NavLink style="padding-left: 1rem" href="@("cities?page=" + (Page + 1))">--&gt;</NavLink>
+		}
+	</div>
+}
 
 @code {
 	[Parameter]
 	[SupplyParameterFromQuery(Name = "page")]
 	public int? Page { get; set; }
-	public IEnumerable<CityDTO> CityDTOs = [];
+	public PagedResult<CityDTO> CitiesPage { get; set; }
 	public Dictionary<int, string> CountryNames = [];
 
 	protected override async Task OnInitializedAsync() {
-		CityDTOs = await _mediator.Send(new GetAllCitiesQuery() { PageNumber = Page ?? 1, PageSize = 20 });
-		IEnumerable<CountryDTO> countryDTOs = await _mediator.Send(new GetAllCountriesQuery());
+		Page ??= 1;
+		CitiesPage = await _mediator.Send(new GetAllCitiesQuery() { PageNumber = Page ?? 1, PageSize = 20 });
+		List<CountryDTO> countryDTOs = (await _mediator.Send(new GetAllCountriesQuery())).Data;
 
 		foreach (CountryDTO countryDTO in countryDTOs) {
 			CountryNames.Add(countryDTO.Id, countryDTO.Name);

@@ -1,4 +1,6 @@
-﻿using AP.DemoProject.Application.Interfaces;
+﻿using AP.DemoProject.Application.Extensions;
+using AP.DemoProject.Application.Interfaces;
+using AP.DemoProject.Domain;
 using AutoMapper;
 using MediatR;
 using System;
@@ -8,11 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AP.DemoProject.Application.CQRS.Countries {
-    public class GetAllCountriesQuery : IRequest<IEnumerable<CountryDTO>> {
+    public class GetAllCountriesQuery : IRequest<PagedResult<CountryDTO>> {
         
     }
 
-    public class GetAllCountriesQueryHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryDTO>> {
+    public class GetAllCountriesQueryHandler : IRequestHandler<GetAllCountriesQuery, PagedResult<CountryDTO>> {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
@@ -21,8 +23,8 @@ namespace AP.DemoProject.Application.CQRS.Countries {
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CountryDTO>> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken) {
-            return _mapper.Map<IEnumerable<CountryDTO>>(await _unitOfWork.CountryRepository.GetAll(1, 100));
+        public async Task<PagedResult<CountryDTO>> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken) {
+            return _mapper.ConvertPagedResult<Country, CountryDTO>(await _unitOfWork.CountryRepository.GetAll(1, 100));
         }
     }
 }

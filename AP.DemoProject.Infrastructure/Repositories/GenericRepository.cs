@@ -1,4 +1,5 @@
-﻿using AP.DemoProject.Application.Interfaces;
+﻿using AP.DemoProject.Application;
+using AP.DemoProject.Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,23 @@ namespace AP.DemoProject.Infrastructure.Repositories {
             _dbSet = dbContext.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAll(int pageNr, int pageSize) {
-            return await _dbSet.Skip((pageNr - 1) * pageSize).Take(pageSize).ToListAsync();
+        public async Task<PagedResult<T>> GetAll(int pageNr, int pageSize) {
+            int skipPosition = (pageNr - 1) * pageSize;
+            int totalRecordCount = await _dbSet.CountAsync();
+
+            List<T> data = await _dbSet
+                .Skip(skipPosition)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<T>() {
+                Data = data,
+                PageNumber = pageNr,
+                PageSize = pageSize,
+                TotalRecordCount = totalRecordCount,
+                FilteredRecordCount = totalRecordCount, // no filtering, so the same value
+                TotalNumberOfPages = (int)Math.Ceiling(totalRecordCount / (double)pageSize)
+            };
         }
 
         public async Task<T?> GetById(int id) {

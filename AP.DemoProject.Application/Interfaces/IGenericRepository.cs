@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AP.DemoProject.Application.Interfaces {
     public interface IGenericRepository<T> {
-        Task<IEnumerable<T>> GetAll(int pageNr, int pageSize);
+        Task<PagedResult<T>> GetAll(int pageNr, int pageSize);
         Task<T?> GetById(int id);
         Task<T> Create(T newStore);
         Task<T> Update(T modifiedStore);

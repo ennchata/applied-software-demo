@@ -15,8 +15,19 @@ namespace AP.DemoProject.Infrastructure.Repositories {
             
         }
 
-        public async Task<IEnumerable<City>> GetAllSortByPopulation(int pageNr, int pageSize) {
-            return await _dbSet.OrderBy(c => c.Population).Skip((pageNr - 1) * pageSize).Take(pageSize).ToListAsync();
+        public async Task<PagedResult<City>> GetAllSortByPopulation(int pageNr, int pageSize) {
+            int skipPosition = (pageNr - 1) * pageSize;
+            int totalRecordCount = await _dbSet.CountAsync();
+
+            List<City> data = await _dbSet.OrderBy(c => c.Population).Skip((pageNr - 1) * pageSize).Take(pageSize).ToListAsync();
+            return new PagedResult<City>() {
+                Data = data,
+                PageNumber = pageNr,
+                PageSize = pageSize,
+                TotalRecordCount = totalRecordCount,
+                FilteredRecordCount = totalRecordCount,
+                TotalNumberOfPages = (int)Math.Ceiling(totalRecordCount / (double)pageSize)
+            };
         }
     }
 }
