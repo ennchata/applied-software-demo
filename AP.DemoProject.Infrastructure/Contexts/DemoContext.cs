@@ -20,8 +20,8 @@ namespace AP.DemoProject.Infrastructure.Contexts {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            modelBuilder.Entity<City>().Seed();
             modelBuilder.Entity<Country>().Seed();
+            modelBuilder.Entity<City>().Seed();
         }
     }
 }
