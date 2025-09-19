@@ -19,7 +19,7 @@
 		<tr>
 			<td>@dto.Name</td>
 			<td>@dto.Population</td>
-			@if (CountryNames.TryGetValue(dto.CountryId, out string countryName)) {
+			@if (CountryNames.TryGetValue(dto.CountryId, out string? countryName)) {
 				<td>@countryName</td>
 			} else {
 				<td>Unknown</td>
