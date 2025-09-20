@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AP.DemoProject.Application.CQRS.Cities {
     public class AddCityCommand : IRequest<CityDTO> {
-        [Required(ErrorMessage = "City is required")]
+        
         public City City { get; set; }
     }
 
