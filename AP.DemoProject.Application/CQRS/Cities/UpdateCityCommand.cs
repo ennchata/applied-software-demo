@@ -24,6 +24,7 @@ namespace AP.DemoProject.Application.CQRS.Cities
             uow = unitOfWork;
             RuleFor(x => x.Population)
                 .GreaterThanOrEqualTo(0)
+                .WithMessage("inwoners aantal moet positief getal zijn")
                 .LessThanOrEqualTo(10000000)
                 .WithMessage("inwoners aantal mag niet meer dan 10mil zijn");
 
