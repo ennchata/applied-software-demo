@@ -1,6 +1,7 @@
 using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Domain;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,24 @@ namespace AP.DemoProject.Application.CQRS.Cities {
         public City City { get; set; }
     }
 
+    public class AddCityCommandValidator : AbstractValidator<AddCityCommand>
+    {
+        public AddCityCommandValidator()
+        {
+            RuleFor(c => c.City)
+                .NotNull()
+                .WithMessage("City cannot be NULL");
+
+            RuleFor(c => c.City.Population)
+                .GreaterThan(0).WithMessage("Population must be positive.")
+                .LessThanOrEqualTo(10000000).WithMessage("Population cannot exceed 10 million.");
+
+            RuleFor(c => c.City.CountryId)
+                .NotEmpty()
+                .WithMessage("You must choose a country");
+
+        }
+    }
     public class AddCityCommandHandler : IRequestHandler<AddCityCommand, CityDTO> {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,4 +49,6 @@ namespace AP.DemoProject.Application.CQRS.Cities {
             return _mapper.Map<CityDTO>(createdCity);
         }
     }
+
+
 }
