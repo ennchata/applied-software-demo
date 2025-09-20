@@ -1,13 +1,12 @@
 @page "/cities/create"
-@using MediatR
 @using AP.DemoProject.Application.CQRS.Cities
 @using AP.DemoProject.Application.CQRS.Countries
 @using AP.DemoProject.Domain
-@using System.ComponentModel.DataAnnotations
+@using MediatR
 @inject IMediator _mediator
 @inject NavigationManager NavigationManager
-@implements IDisposable
 @rendermode InteractiveServer
+
 
 <PageTitle>Create City</PageTitle>
 
