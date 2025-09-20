@@ -18,33 +18,35 @@ namespace AP.DemoProject.Application.CQRS.Cities
     }
     public class UpdateCityValidator : AbstractValidator<UpdateCityCommand>
     {
-        public UpdateCityValidator()
+        private readonly IUnitOfWork uow;
+        public UpdateCityValidator(IUnitOfWork unitOfWork)
         {
-            //RuleFor(x => x.Population)
-            //    .GreaterThanOrEqualTo(0)
-            //    .LessThanOrEqualTo(10000000)
-            //    .WithMessage("inwoners aantal mag niet meer dan 10mil zijn");
+            uow = unitOfWork;
+            RuleFor(x => x.Population)
+                .GreaterThanOrEqualTo(0)
+                .LessThanOrEqualTo(10000000)
+                .WithMessage("inwoners aantal mag niet meer dan 10mil zijn");
 
-            //RuleFor(x => x.CountryId)
-            //    .GreaterThan(0)
-            //    .WithMessage("kies een land aub");
+            RuleFor(x => x.CountryId)
+                .GreaterThan(-4)
+                .WithMessage("kies een land aub");
         }
     }
 
     public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand, CityDTO>
     {
-        private readonly ICityRepository _cityRepo;
+        private readonly IUnitOfWork uow;
         private readonly IMapper _mapper;
 
-        public UpdateCityCommandHandler(ICityRepository cityRepo, IMapper mapper)
+        public UpdateCityCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _cityRepo = cityRepo;
+            uow = unitOfWork;
             _mapper = mapper;
         }
 
         public async Task<CityDTO> Handle(UpdateCityCommand request, CancellationToken cancellationToken)
         {
-            var city = await _cityRepo.GetByIdAsync(request.Id);
+            var city = await uow.CityRepository.GetByIdAsync(request.Id);
             if (city == null)
                 throw new KeyNotFoundException($"City with Id {request.Id} not found");
 
@@ -52,7 +54,8 @@ namespace AP.DemoProject.Application.CQRS.Cities
             city.Population = request.Population;
             city.CountryId = request.CountryId;
 
-            await _cityRepo.UpdateAsync(city);
+            uow.CityRepository.Update(city);
+            await uow.Commit();
 
             return _mapper.Map<CityDTO>(city);
         }

@@ -33,8 +33,8 @@ namespace AP.DemoProject.Infrastructure.Repositories {
             Console.WriteLine($"Entity State: {entry.State}");
             Console.WriteLine($"Modified: {entry.Property(x => x.Population).IsModified}, {entry.Property(x => x.CountryId).IsModified}");
 
-            var changes = await _context.SaveChangesAsync();
-            Console.WriteLine($"SaveChangesAsync completed. Changes saved: {changes}");
+            //var changes = await _context.SaveChangesAsync();
+            //Console.WriteLine($"SaveChangesAsync completed. Changes saved: {changes}");
 
             // Verify the changes were saved
             var updatedCity = await _context.Cities.AsNoTracking().FirstOrDefaultAsync(c => c.Id == city.Id);
