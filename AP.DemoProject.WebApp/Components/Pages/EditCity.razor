@@ -1,0 +1,123 @@
+﻿@page "/cities/edit/{Id:int}"
+@using AP.DemoProject.Application.CQRS.Cities
+@using AP.DemoProject.Application.CQRS.Countries
+@using MediatR
+@using System.ComponentModel.DataAnnotations
+@inject IMediator _mediator
+@inject NavigationManager Nav
+
+<h3>Edit City</h3>
+
+@if (Model is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="Model" OnValidSubmit="HandleValidSubmit" FormName="EditCityForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <InputText @bind-Value="Model.Name" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Population</label>
+            <InputNumber @bind-Value="Model.Population" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Country</label>
+            <InputSelect @bind-Value="Model.CountryId" class="form-control">
+                <option value="0">-- Select a country --</option>
+                @foreach (var country in Countries)
+                {
+                    <option value="@country.Id">@country.Name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    //private EditContext? _editContext;
+
+    //public CityEditModel? Model { get; set; }
+    CityEditModel Model = new CityEditModel();
+
+    public List<CountryDTO> Countries { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var city = await _mediator.Send(new GetCityByIdQuery { Id = Id });
+
+        if (city != null)
+        {
+            // Model = new CityEditModel
+            //     {
+            //         Id = city.Id,
+            //         Name = city.Name,
+            //         Population = city.Population,
+            //         CountryId = city.CountryId
+            //     };
+            Model.Id = city.Id;
+            Model.Name = city.Name;
+            Model.Population = city.Population;
+            Model.CountryId = city.CountryId;
+        }
+
+        Countries = (await _mediator.Send(new GetAllCountriesQuery())).Data;
+
+        //_editContext = new EditContext(Model);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        
+        //var currentModel = (CityEditModel)_editContext.Model;
+
+        Console.WriteLine($"\n***\n*** CountryId: {Model.CountryId} | Population: {Model.Population} \n******\n");
+
+
+        //if (Model == null) return;
+
+        //Console.WriteLine("ID OF COUNTRY IS " + Model.CountryId);
+
+        // if (Model.CountryId <= 0)
+        // {
+        //     
+        //     return;
+        // }
+
+        var cmd = new UpdateCityCommand
+            {
+                Id = Model.Id,
+                Population = Model.Population,
+                CountryId = Model.CountryId
+            };
+
+        await _mediator.Send(cmd);
+
+        
+        Nav.NavigateTo("/cities");
+    }
+
+    public class CityEditModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+
+        [Range(0, 10000000000, ErrorMessage = "Aantal inwoners mag niet groter zijn dan 10 miljard")]
+        public int Population { get; set; }
+
+        //[Required(ErrorMessage = "kies een land!")]
+        public int CountryId { get; set; } // Required zorgt dat validatie werkt
+    }
+}
