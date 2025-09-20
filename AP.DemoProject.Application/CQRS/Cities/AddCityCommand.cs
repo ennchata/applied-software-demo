@@ -18,11 +18,21 @@ namespace AP.DemoProject.Application.CQRS.Cities {
 
     public class AddCityCommandValidator : AbstractValidator<AddCityCommand>
     {
-        public AddCityCommandValidator()
+        private readonly IUnitOfWork _unitOfWork;
+
+        public AddCityCommandValidator(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
+
             RuleFor(c => c.City)
                 .NotNull()
                 .WithMessage("City cannot be NULL");
+
+            RuleFor(c => c.City.Name)
+                .NotEmpty()
+                .WithMessage("City name is required")
+                .MustAsync(CityNameIsUnique)
+                .WithMessage("De naam mag nog niet bestaan in de databank");
 
             RuleFor(c => c.City.Population)
                 .GreaterThan(0).WithMessage("Population must be positive.")
@@ -30,10 +40,24 @@ namespace AP.DemoProject.Application.CQRS.Cities {
 
             RuleFor(c => c.City.CountryId)
                 .NotEmpty()
-                .WithMessage("You must choose a country");
+                .WithMessage("You must choose a country")
+                .MustAsync(CountryExists)
+                .WithMessage("The specified country does not exist");
+        }
 
+        private async Task<bool> CityNameIsUnique(string cityName, CancellationToken cancellationToken)
+        {
+            City? city = await _unitOfWork.CityRepository.GetByName(cityName);
+            return city == null ? true : false;
+        }
+
+        private async Task<bool> CountryExists(int countryId, CancellationToken cancellationToken)
+        {
+            var country = await _unitOfWork.CountryRepository.GetById(countryId);
+            return country != null;
         }
     }
+
     public class AddCityCommandHandler : IRequestHandler<AddCityCommand, CityDTO> {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
