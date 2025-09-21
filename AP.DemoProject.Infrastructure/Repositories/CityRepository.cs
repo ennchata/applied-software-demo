@@ -46,5 +46,9 @@ namespace AP.DemoProject.Infrastructure.Repositories {
                 TotalNumberOfPages = (int)Math.Ceiling(totalRecordCount / (double)pageSize)
             };
         }
+
+        public async Task<City?> GetByName(string name) {
+            return await _dbSet.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        }
     }
 }
