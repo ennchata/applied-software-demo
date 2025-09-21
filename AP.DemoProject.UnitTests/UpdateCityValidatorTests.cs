@@ -167,7 +167,7 @@ namespace AP.DemoProject.Application.UnitTests.CQRS.Cities
             var command = new UpdateCityCommand
             {
                 Population = 10000,
-                CountryId = -3  // Greater than -4
+                CountryId = -3
             };
 
             // Act
