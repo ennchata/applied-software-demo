@@ -32,7 +32,7 @@ namespace AP.DemoProject.Application.CQRS.Cities {
                 .NotEmpty()
                 .WithMessage("City name is required")
                 .MustAsync(CityNameIsUnique)
-                .WithMessage("De naam mag nog niet bestaan in de databank");
+                .WithMessage("The city name must be unique");
 
             RuleFor(c => c.City.Population)
                 .GreaterThan(0).WithMessage("Population must be positive.")
