@@ -48,7 +48,7 @@ namespace AP.DemoProject.Application.CQRS.Cities {
         private async Task<bool> CityNameIsUnique(string cityName, CancellationToken cancellationToken)
         {
             City? city = await _unitOfWork.CityRepository.GetByName(cityName);
-            return city == null ? true : false;
+            return city == null;
         }
 
         private async Task<bool> CountryExists(int countryId, CancellationToken cancellationToken)
