@@ -11,8 +11,20 @@ using System.Threading.Tasks;
 
 namespace AP.DemoProject.Infrastructure.Repositories {
     public class CityRepository : GenericRepository<City>, ICityRepository {
+
+        private readonly DemoContext _context;
         public CityRepository(DemoContext context) : base(context) {
-            
+            _context = context;
+        }
+        public async Task<City?> GetByIdAsync(int id)
+        {
+            return await _context.Cities
+                .Include(c => c.Country)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
+        public async Task UpdateAsync(City city)
+        {
+            _context.Cities.Update(city);
         }
 
         public async Task<PagedResult<City>> GetAllSortByPopulation(int pageNr, int pageSize) {

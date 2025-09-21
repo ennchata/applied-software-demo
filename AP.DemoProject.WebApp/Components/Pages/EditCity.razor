@@ -1,0 +1,180 @@
+﻿@page "/cities/edit/{Id:int}"
+@using AP.DemoProject.Application.CQRS.Cities
+@using AP.DemoProject.Application.CQRS.Countries
+@using AP.DemoProject.Domain
+@using MediatR
+@inject IMediator _mediator
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Edit City</PageTitle>
+
+<h1>Demo Project</h1>
+<h2>Edit City</h2>
+
+@if (_isLoading)
+{
+    <p>Loading...</p>
+}
+else if (Model == null)
+{
+    <p>City not found</p>
+}
+else
+{
+    <EditForm EditContext="editContext" OnValidSubmit="HandleSubmit" FormName="EditCityForm">
+        <ValidationSummary />
+
+        <div>
+            <label for="name">City Name:</label>
+            <InputText id="name" @bind-Value="Model.Name" readonly />
+        </div>
+
+        <div>
+            <label for="population">Population:</label>
+            <InputNumber id="population" @bind-Value="Model.Population" />
+            <ValidationMessage For="@(() => Model.Population)" />
+        </div>
+
+        <div>
+            <label for="country">Country:</label>
+            <InputSelect id="country" @bind-Value="Model.CountryId">
+                <option value="0">Select a country</option>
+                @if (countries != null)
+                {
+                    @foreach (var country in countries)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Model.CountryId)" />
+        </div>
+
+        <div>
+            <button type="submit">Save Changes</button>
+            <NavLink href="/cities">Cancel</NavLink>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private City? Model { get; set; }
+
+    private List<CountryDTO>? countries;
+    private EditContext? editContext;
+    private ValidationMessageStore? messageStore;
+    private bool _isLoading = true;
+
+    protected override void OnInitialized()
+    {
+        Model ??= new City();
+        editContext = new EditContext(Model);
+        editContext.OnValidationRequested += HandleValidationRequested;
+        editContext.OnFieldChanged += HandleFieldChanged;
+        messageStore = new ValidationMessageStore(editContext);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            
+            var city = await _mediator.Send(new GetCityByIdQuery { Id = Id });
+            var countriesResult = await _mediator.Send(new GetAllCountriesQuery());
+
+            countries = countriesResult.Data;
+
+            if (city != null)
+            {
+                Model.Id = city.Id;
+                Model.Name = city.Name;
+                Model.Population = city.Population;
+                Model.CountryId = city.CountryId;
+            }
+            else
+            {
+                Model = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs e)
+    {
+        Validate();
+    }
+
+    private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+    {
+        Validate();
+    }
+
+    private void Validate()
+    {
+        messageStore?.Clear();
+
+        if (Model?.Population <= 0)
+        {
+            messageStore?.Add(() => Model.Population, "Population moet een positief getal zijn");
+        }
+        else if (Model?.Population > 10000000000)
+        {
+            messageStore?.Add(() => Model.Population, "Population kan niet over 10 mil zijn");
+        }
+
+        if (Model?.CountryId <= -4)
+        {
+            messageStore?.Add(() => Model.CountryId, "kies een land!");
+        }
+
+        editContext?.NotifyValidationStateChanged();
+    }
+
+    private async Task HandleSubmit()
+    {
+        Console.WriteLine($"SUBMITTING: Id={Model?.Id}, Population={Model?.Population}, CountryId={Model?.CountryId}");
+
+        try
+        {
+            var cmd = new UpdateCityCommand
+                {
+                    Id = Model!.Id,
+                    Population = Model.Population,
+                    CountryId = Model.CountryId
+                };
+
+            await _mediator.Send(cmd);
+            
+            NavigationManager.NavigateTo("/cities");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating city: {ex.Message}");
+
+            if (ex is Microsoft.AspNetCore.Components.NavigationException)
+            {
+                Console.WriteLine("NavigationException Error (but city was updated successfully)");
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        if (editContext != null)
+        {
+            editContext.OnValidationRequested -= HandleValidationRequested;
+            editContext.OnFieldChanged -= HandleFieldChanged;
+        }
+    }
+}
