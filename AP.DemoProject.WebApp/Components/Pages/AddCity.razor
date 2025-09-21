@@ -106,9 +106,9 @@
         {
             messageStore?.Add(() => Model.Population, "Population must be a positive number");
         }
-        else if (Model?.Population > 10000000000)
+        else if (Model?.Population > 10000000)
         {
-            messageStore?.Add(() => Model.Population, "Population cannot exceed 10,000,000,000");
+            messageStore?.Add(() => Model.Population, "Population cannot exceed 10,000,000");
         }
 
         if (!countries!.Any(c => c.Id == Model!.CountryId))
