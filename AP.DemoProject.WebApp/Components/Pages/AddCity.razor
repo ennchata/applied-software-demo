@@ -129,13 +129,7 @@
         {
             var addCityCommand = new AddCityCommand { City = Model! };
             await _mediator.Send(addCityCommand);
-            try  {
-
-                NavigationManager.NavigateTo("/cities", true);
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            NavigationManager.NavigateTo("/cities", true);
         }
         catch (Exception ex)
         {
