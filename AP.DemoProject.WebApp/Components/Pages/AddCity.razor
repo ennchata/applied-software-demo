@@ -111,7 +111,11 @@
             messageStore?.Add(() => Model.Population, "Population cannot exceed 10,000,000,000");
         }
 
-        if (!countries!.Any(c => c.Id == Model!.CountryId))
+        if (countries == null)
+        {
+            messageStore?.Add(() => Model!.CountryId, "Country list could not be loaded. Please try again later.");
+        }
+        else if (!countries.Any(c => c.Id == Model!.CountryId))
         {
             messageStore?.Add(() => Model!.CountryId, "Please select a country");
         }
