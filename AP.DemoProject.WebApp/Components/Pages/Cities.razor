@@ -22,7 +22,7 @@
 		@foreach (CityDTO dto in CitiesPage.Data) {
 			<tr>
 				<td>
-					<NavLink class="text-decoration-none" href="@($"/cities/edit2/{dto.Id}")">
+					<NavLink class="text-decoration-none" href="@($"/cities/edit/{dto.Id}")">
 						@dto.Name
 					</NavLink>
 				</td>

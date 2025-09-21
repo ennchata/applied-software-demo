@@ -24,24 +24,7 @@ namespace AP.DemoProject.Infrastructure.Repositories {
         }
         public async Task UpdateAsync(City city)
         {
-            //Console.WriteLine($"BEFORE UPDATE: Id={city.Id}, Population={city.Population}, CountryId={city.CountryId}");
-
             _context.Cities.Update(city);
-
-            // Check the entity state
-            //var entry = _context.Entry(city);
-            //Console.WriteLine($"Entity State: {entry.State}");
-            //Console.WriteLine($"Modified: {entry.Property(x => x.Population).IsModified}, {entry.Property(x => x.CountryId).IsModified}");
-
-            //var changes = await _context.SaveChangesAsync();
-            //Console.WriteLine($"SaveChangesAsync completed. Changes saved: {changes}");
-
-            // Verify the changes were saved
-            //var updatedCity = await _context.Cities.AsNoTracking().FirstOrDefaultAsync(c => c.Id == city.Id);
-            //if (updatedCity != null)
-            //{
-                //Console.WriteLine($"AFTER SAVE: Population={updatedCity.Population}, CountryId={updatedCity.CountryId}");
-            //}
         }
 
         public async Task<PagedResult<City>> GetAllSortByPopulation(int pageNr, int pageSize) {
