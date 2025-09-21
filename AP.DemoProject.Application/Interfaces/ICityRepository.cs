@@ -11,5 +11,6 @@ namespace AP.DemoProject.Application.Interfaces {
 
         Task<City?> GetByIdAsync(int id);
         Task UpdateAsync(City city);
+        Task<int> CountAsync();
     }
 }

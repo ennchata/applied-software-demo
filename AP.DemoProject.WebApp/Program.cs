@@ -1,5 +1,7 @@
 using AP.DemoProject.Application.Extensions;
+using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Infrastructure.Extensions;
+using AP.DemoProject.Infrastructure.Services;
 using AP.DemoProject.WebApp.Components;
 
 namespace AP.DemoProject.WebApp {
@@ -12,6 +14,7 @@ namespace AP.DemoProject.WebApp {
             builder.Services.RegisterInfrastructure();
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             var app = builder.Build();
 
