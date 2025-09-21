@@ -26,6 +26,11 @@ namespace AP.DemoProject.Infrastructure.Repositories {
         {
             _context.Cities.Update(city);
         }
+        
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
 
         public async Task<PagedResult<City>> GetAllSortByPopulation(int pageNr, int pageSize) {
             int skipPosition = (pageNr - 1) * pageSize;
