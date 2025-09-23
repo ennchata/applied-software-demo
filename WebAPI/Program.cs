@@ -35,7 +35,7 @@ namespace AP.DemoProject.WebAPI
             
             app.UseErrorHandlingMiddleware();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
