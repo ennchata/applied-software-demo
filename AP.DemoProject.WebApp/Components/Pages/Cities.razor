@@ -1,9 +1,9 @@
 ﻿@page "/cities"
-@using MediatR
 @using AP.DemoProject.Application
 @using AP.DemoProject.Application.CQRS.Cities
 @using AP.DemoProject.Application.CQRS.Countries
-@inject IMediator _mediator
+@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager;
 
 <PageTitle>Cities</PageTitle>
 
@@ -51,15 +51,16 @@
 	[Parameter]
 	[SupplyParameterFromQuery(Name = "page")]
 	public int? Page { get; set; }
-	public PagedResult<CityDTO> CitiesPage { get; set; }
+	public PagedResult<CityDTO>? CitiesPage { get; set; }
 	public Dictionary<int, string> CountryNames = [];
 
 	protected override async Task OnInitializedAsync() {
+		_httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
 		Page ??= 1;
-		CitiesPage = await _mediator.Send(new GetAllCitiesQuery() { PageNumber = Page ?? 1, PageSize = 20 });
-		List<CountryDTO> countryDTOs = (await _mediator.Send(new GetAllCountriesQuery())).Data;
+		CitiesPage = await _httpClient.GetFromJsonAsync<PagedResult<CityDTO>>($"/api/city?pageNumber={Page}&pageSize=20");
+		PagedResult<CountryDTO>? countryResult = await _httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
 
-		foreach (CountryDTO countryDTO in countryDTOs) {
+		foreach (CountryDTO countryDTO in countryResult!.Data) {
 			CountryNames.Add(countryDTO.Id, countryDTO.Name);
 		}
 	}
