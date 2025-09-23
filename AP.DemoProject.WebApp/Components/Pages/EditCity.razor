@@ -1,10 +1,7 @@
 ﻿@page "/cities/edit/{Id:int}"
-@using AP.DemoProject.Application.CQRS.Cities
-@using AP.DemoProject.Application.CQRS.Countries
-@using AP.DemoProject.Domain
-@using MediatR
-@inject IMediator _mediator
+@using AP.DemoProject.WebApp.Models
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
 @rendermode InteractiveServer
 
 <PageTitle>Edit City</PageTitle>
@@ -63,7 +60,7 @@ else
     [Parameter] public int Id { get; set; }
 
     [SupplyParameterFromForm]
-    private City? Model { get; set; }
+    private CityDTO? Model { get; set; }
 
     private List<CountryDTO>? countries;
     private EditContext? editContext;
@@ -72,7 +69,7 @@ else
 
     protected override void OnInitialized()
     {
-        Model ??= new City();
+        Model ??= new CityDTO();
         editContext = new EditContext(Model);
         editContext.OnValidationRequested += HandleValidationRequested;
         editContext.OnFieldChanged += HandleFieldChanged;
@@ -83,18 +80,14 @@ else
     {
         try
         {
-            
-            var city = await _mediator.Send(new GetCityByIdQuery { Id = Id });
-            var countriesResult = await _mediator.Send(new GetAllCountriesQuery());
+            var city = await Http.GetFromJsonAsync<CityDTO>($"/api/city/{Id}");
+            var countriesResult = await Http.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
 
-            countries = countriesResult.Data;
+            countries = countriesResult?.Data;
 
             if (city != null)
             {
-                Model.Id = city.Id;
-                Model.Name = city.Name;
-                Model.Population = city.Population;
-                Model.CountryId = city.CountryId;
+                Model = city;
             }
             else
             {
@@ -134,7 +127,7 @@ else
             messageStore?.Add(() => Model.Population, "Population kan niet over 10 mil zijn");
         }
 
-        if (Model?.CountryId <= -4)
+        if (Model?.CountryId <= 0)
         {
             messageStore?.Add(() => Model.CountryId, "kies een land!");
         }
@@ -148,25 +141,12 @@ else
 
         try
         {
-            var cmd = new UpdateCityCommand
-                {
-                    Id = Model!.Id,
-                    Population = Model.Population,
-                    CountryId = Model.CountryId
-                };
-
-            await _mediator.Send(cmd);
-            
+            await Http.PutAsJsonAsync($"/api/city/{Model!.Id}", Model);
             NavigationManager.NavigateTo("/cities");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error updating city: {ex.Message}");
-
-            if (ex is Microsoft.AspNetCore.Components.NavigationException)
-            {
-                Console.WriteLine("NavigationException Error (but city was updated successfully)");
-            }
         }
     }
 
@@ -185,7 +165,7 @@ else
         {
             try
             {
-                await _mediator.Send(new DeleteCityCommand { Id = Model.Id });
+                await Http.DeleteAsync($"/api/city/{Model.Id}");
                 NavigationManager.NavigateTo("/cities");
             }
             catch (Exception ex)

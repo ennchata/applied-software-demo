@@ -1,8 +1,5 @@
 @page "/cities/add"
-@using AP.DemoProject.Application.CQRS.Cities
-@using AP.DemoProject.Application.CQRS.Countries
-@using AP.DemoProject.Domain
-@using MediatR
+@using AP.DemoProject.WebApp.Models
 @inject NavigationManager NavigationManager
 @implements IDisposable
 @rendermode InteractiveServer
@@ -54,7 +51,7 @@
 @code {
 
     [SupplyParameterFromForm]
-    private City? Model { get; set; }
+    private CityCreateDTO? Model { get; set; }
 
     private List<CountryDTO>? countries;
 
@@ -63,7 +60,7 @@
 
     protected override void OnInitialized()
     {
-        Model ??= new City();
+        Model ??= new CityCreateDTO();
         editContext = new EditContext(Model);
         editContext.OnValidationRequested += HandleValidationRequested;
         editContext.OnFieldChanged += HandleFieldChanged;
@@ -74,8 +71,7 @@
     {
         try
         {
-            //var countriesResult = await _mediator.Send(new GetAllCountriesQuery());
-           // countries = countriesResult.Data;
+            //Fetch countries here
         }
         catch (Exception ex)
         {
@@ -127,8 +123,8 @@
     {
         try
         {
-            var addCityCommand = new AddCityCommand { City = Model! };
-            //await _mediator.Send(addCityCommand);
+            //Post Model to API here
+
             NavigationManager.NavigateTo("/cities", true);
         }
         catch (Exception ex)
