@@ -19,9 +19,9 @@ namespace AP.DemoProject.WebApp {
             builder.Services.AddControllers();
             
             builder.WebHost.UseUrls("http://0.0.0.0:5022");
-            builder.Services.AddHttpClient("WebAPI", client =>
+            builder.Services.AddScoped(sp => new HttpClient
             {
-                client.BaseAddress = new Uri("http://localhost:5000/"); // WebAPI HTTP port
+                BaseAddress = new Uri("http://localhost:5000/") // WebAPI HTTP port
             });
 
             var app = builder.Build();
