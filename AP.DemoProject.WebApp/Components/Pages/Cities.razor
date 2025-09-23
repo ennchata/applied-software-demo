@@ -55,7 +55,7 @@
 	public Dictionary<int, string> CountryNames = [];
 
 	protected override async Task OnInitializedAsync() {
-		_httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
+		_httpClient.BaseAddress = new Uri("http://localhost:5000");
 		Page ??= 1;
 		CitiesPage = await _httpClient.GetFromJsonAsync<PagedResult<CityDTO>>($"/api/city?pageNumber={Page}&pageSize=20");
 		PagedResult<CountryDTO>? countryResult = await _httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");

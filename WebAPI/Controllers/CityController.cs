@@ -1,4 +1,4 @@
-﻿using AP.DemoProject.Application.CQRS.Cities;
+using AP.DemoProject.Application.CQRS.Cities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

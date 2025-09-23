@@ -3,7 +3,6 @@
 @using AP.DemoProject.Application.CQRS.Countries
 @using AP.DemoProject.Domain
 @using MediatR
-@inject IMediator _mediator
 @inject NavigationManager NavigationManager
 @implements IDisposable
 @rendermode InteractiveServer
@@ -75,8 +74,8 @@
     {
         try
         {
-            var countriesResult = await _mediator.Send(new GetAllCountriesQuery());
-            countries = countriesResult.Data;
+            //var countriesResult = await _mediator.Send(new GetAllCountriesQuery());
+           // countries = countriesResult.Data;
         }
         catch (Exception ex)
         {
@@ -129,7 +128,7 @@
         try
         {
             var addCityCommand = new AddCityCommand { City = Model! };
-            await _mediator.Send(addCityCommand);
+            //await _mediator.Send(addCityCommand);
             NavigationManager.NavigateTo("/cities", true);
         }
         catch (Exception ex)
