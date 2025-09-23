@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace AP.DemoProject.Application {
     public class Mapping : Profile {
         public Mapping() {
-            CreateMap<City, CityDTO>();
+            CreateMap<City, CityDTO>().ReverseMap();
             CreateMap<Country, CountryDTO>();
         }
     }
