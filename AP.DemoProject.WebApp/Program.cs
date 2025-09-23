@@ -3,6 +3,7 @@ using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Infrastructure.Extensions;
 using AP.DemoProject.Infrastructure.Services;
 using AP.DemoProject.WebApp.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace AP.DemoProject.WebApp {
     public class Program {
@@ -15,6 +16,8 @@ namespace AP.DemoProject.WebApp {
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddControllers();
+            builder.Services.AddHttpClient();
 
             var app = builder.Build();
 
@@ -24,7 +27,10 @@ namespace AP.DemoProject.WebApp {
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
+
             app.UseAntiforgery();
+            app.MapControllers();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
