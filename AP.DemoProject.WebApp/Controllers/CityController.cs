@@ -7,7 +7,7 @@ namespace AP.DemoProject.WebApp.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class CityController : ControllerBase {
-        public IMediator _mediator;
+        private readonly IMediator _mediator;
 
         public CityController(IMediator mediator) {
             _mediator = mediator;
