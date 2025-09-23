@@ -15,6 +15,7 @@ namespace AP.DemoProject.WebApp {
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
@@ -24,7 +25,10 @@ namespace AP.DemoProject.WebApp {
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
+
             app.UseAntiforgery();
+            app.MapControllers();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
