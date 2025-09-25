@@ -31,5 +31,19 @@ namespace AP.DemoProject.WebApp.Controllers
         {
             return Ok(await _mediator.Send(new AddCityCommand() { City = dto }));
         }
+        
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _mediator.Send(new GetCityByIdQuery { Id = id });
+            if (result == null) return NotFound();
+            return Ok(result);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return Ok(await _mediator.Send(new DeleteCityCommand() { Id = id }));
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@page "/cities/edit/{Id:int}"
 @using AP.DemoProject.WebApp.Models
 @inject NavigationManager NavigationManager
-@inject HttpClient Http
+@inject HttpClient HttpClient
 @rendermode InteractiveServer
 
 <PageTitle>Edit City</PageTitle>
@@ -80,8 +80,8 @@ else
     {
         try
         {
-            var city = await Http.GetFromJsonAsync<CityDTO>($"/api/city/{Id}");
-            var countriesResult = await Http.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
+            var city = await HttpClient.GetFromJsonAsync<CityDTO>($"/api/city/{Id}");
+            var countriesResult = await HttpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
 
             countries = countriesResult?.Data;
 
@@ -141,7 +141,7 @@ else
 
         try
         {
-            await Http.PutAsJsonAsync($"/api/city/{Model!.Id}", Model);
+            await HttpClient.PutAsJsonAsync($"/api/city/{Model!.Id}", Model);
             NavigationManager.NavigateTo("/cities");
         }
         catch (Exception ex)
@@ -165,7 +165,7 @@ else
         {
             try
             {
-                await Http.DeleteAsync($"/api/city/{Model.Id}");
+                await HttpClient.DeleteAsync($"/api/city/{Model.Id}");
                 NavigationManager.NavigateTo("/cities");
             }
             catch (Exception ex)
