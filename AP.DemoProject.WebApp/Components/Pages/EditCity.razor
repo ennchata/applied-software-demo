@@ -88,6 +88,10 @@ else
             if (city != null)
             {
                 Model = city;
+                editContext = new EditContext(Model);
+                editContext.OnValidationRequested += HandleValidationRequested;
+                editContext.OnFieldChanged += HandleFieldChanged;
+                messageStore = new ValidationMessageStore(editContext);
             }
             else
             {
@@ -103,6 +107,7 @@ else
             _isLoading = false;
         }
     }
+
 
     private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs e)
     {
@@ -127,7 +132,7 @@ else
             messageStore?.Add(() => Model.Population, "Population kan niet over 10 mil zijn");
         }
 
-        if (Model?.CountryId <= 0)
+        if (Model?.CountryId <= -4)
         {
             messageStore?.Add(() => Model.CountryId, "kies een land!");
         }
