@@ -15,7 +15,7 @@ namespace AP.DemoProject.WebAPI
                 options.AddPolicy(name: "LocalOrigins",
                                   policy =>
                                   {
-                                      policy.WithOrigins("https://localhost:7104");
+                                      policy.WithOrigins("https://localhost:7104").AllowAnyHeader().AllowAnyMethod();
                                   });
             });
 

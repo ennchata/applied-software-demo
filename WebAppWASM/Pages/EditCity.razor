@@ -126,7 +126,7 @@ else
             messageStore?.Add(() => Model.Population, "Population kan niet over 10 mil zijn");
         }
 
-        if (Model?.CountryId <= 0)
+        if (Model?.CountryId <= -4)
         {
             messageStore?.Add(() => Model.CountryId, "kies een land!");
         }
