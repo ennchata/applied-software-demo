@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application {
+namespace AP.BTP.Application
+{
     public class PagedResult<T> {
         public List<T> Data { get; set; }
         public int PageNumber { get; set; }

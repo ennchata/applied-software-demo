@@ -1,4 +1,6 @@
-﻿using AP.DemoProject.Application.Extensions;
+﻿using AP.BTP.Application;
+using AP.BTP.Application.CQRS.Cities;
+using AP.DemoProject.Application.Extensions;
 using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Domain;
 using AutoMapper;

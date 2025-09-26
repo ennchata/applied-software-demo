@@ -1,4 +1,4 @@
-﻿using AP.DemoProject.Application.CQRS.Cities;
+﻿using AP.BTP.Application.CQRS.Cities;
 using AP.DemoProject.Application.CQRS.Countries;
 using AP.DemoProject.Domain;
 using AutoMapper;

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application.CQRS.Cities
+namespace AP.BTP.Application.CQRS.Cities
 {
     public class UpdateCityCommand : IRequest<CityDTO>
     {

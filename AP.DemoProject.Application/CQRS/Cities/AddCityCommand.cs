@@ -4,7 +4,8 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 
-namespace AP.DemoProject.Application.CQRS.Cities {
+namespace AP.BTP.Application.CQRS.Cities
+{
     public class AddCityCommand : IRequest<CityDTO> {
         
         public CityDTO City { get; set; }
