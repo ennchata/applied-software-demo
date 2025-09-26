@@ -10,6 +10,15 @@ namespace AP.DemoProject.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "LocalOrigins",
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("https://localhost:7104");
+                                  });
+            });
+
             // Add services to the container.
             builder.Services.RegisterApplication();
             builder.Services.RegisterInfrastructure();
@@ -36,6 +45,8 @@ namespace AP.DemoProject.WebAPI
             app.UseErrorHandlingMiddleware();
 
             //app.UseHttpsRedirection();
+
+            app.UseCors("LocalOrigins");
 
             app.UseAuthorization();
 
