@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application.Interfaces {
+namespace AP.BTP.Application.Interfaces
+{
     public interface ICountryRepository : IGenericRepository<Country> {
     }
 }

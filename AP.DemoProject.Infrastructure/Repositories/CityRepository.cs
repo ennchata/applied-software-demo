@@ -1,6 +1,6 @@
 ﻿using AP.BTP.Application;
+using AP.BTP.Application.Interfaces;
 using AP.DemoProject.Application;
-using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Domain;
 using AP.DemoProject.Infrastructure.Contexts;
 using AP.DemoProject.Infrastructure.Repositories;

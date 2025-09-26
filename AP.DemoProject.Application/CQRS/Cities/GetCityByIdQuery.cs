@@ -1,5 +1,5 @@
 ﻿using AP.BTP.Application.CQRS.Cities;
-using AP.DemoProject.Application.Interfaces;
+using AP.BTP.Application.Interfaces;
 using AutoMapper;
 using MediatR;
 using System;

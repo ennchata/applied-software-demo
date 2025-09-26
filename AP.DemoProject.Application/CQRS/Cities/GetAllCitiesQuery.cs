@@ -1,7 +1,7 @@
 ﻿using AP.BTP.Application;
 using AP.BTP.Application.CQRS.Cities;
+using AP.BTP.Application.Interfaces;
 using AP.DemoProject.Application.Extensions;
-using AP.DemoProject.Application.Interfaces;
 using AP.DemoProject.Domain;
 using AutoMapper;
 using MediatR;

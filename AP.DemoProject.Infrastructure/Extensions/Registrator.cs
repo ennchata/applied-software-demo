@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AP.DemoProject.Infrastructure.Services;
 using AP.BTP.Infrastructure.Repositories;
+using AP.BTP.Application.Interfaces;
 
 namespace AP.DemoProject.Infrastructure.Extensions {
     public static class Registrator {

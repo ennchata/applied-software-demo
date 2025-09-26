@@ -1,5 +1,5 @@
-﻿using AP.DemoProject.Application;
-using AP.DemoProject.Application.Interfaces;
+﻿using AP.BTP.Application.Interfaces;
+using AP.DemoProject.Application;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

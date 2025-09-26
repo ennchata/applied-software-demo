@@ -1,4 +1,5 @@
 using AP.BTP.Application.CQRS.Cities;
+using AP.BTP.Application.Interfaces;
 using AP.DemoProject.Application.Exceptions;
 using AP.DemoProject.Application.Interfaces;
 using AutoMapper;

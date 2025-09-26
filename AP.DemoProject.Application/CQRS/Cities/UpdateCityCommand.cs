@@ -1,4 +1,4 @@
-﻿using AP.DemoProject.Application.Interfaces;
+﻿using AP.BTP.Application.Interfaces;
 using AutoMapper;
 using FluentValidation;
 using MediatR;

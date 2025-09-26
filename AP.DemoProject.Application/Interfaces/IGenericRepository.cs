@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application.Interfaces {
+namespace AP.BTP.Application.Interfaces
+{
     public interface IGenericRepository<T> {
         Task<PagedResult<T>> GetAll(int pageNr, int pageSize);
         Task<T?> GetById(int id);
