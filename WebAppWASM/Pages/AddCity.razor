@@ -128,9 +128,15 @@
 	{
 		try
 		{
-			//Post Model to API here
-			await httpClient.PostAsJsonAsync("/api/city", Model);
-			NavigationManager.NavigateTo("/cities", true);
+			var response = await httpClient.PostAsJsonAsync("/api/city", Model);
+			if (response.IsSuccessStatusCode)
+			{
+				NavigationManager.NavigateTo("/cities", true);
+			}
+			else
+			{
+				Console.WriteLine($"Error creating city: {response.StatusCode}");
+			}
 		}
 		catch (Exception ex)
 		{
