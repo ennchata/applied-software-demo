@@ -18,7 +18,18 @@ namespace AP.DemoProject.Application.CQRS.Cities
     {
         public DeleteCityValidator(IUnitOfWork unitOfWork)
         {
+            RuleFor(x => x.Id)
+                //.GreaterThan(0).WithMessage("City Id must be greater than 0")
+                .MustAsync(async (id, ct) => await unitOfWork.CityRepository.GetByIdAsync(id) != null)
+                .WithMessage("City not found");
 
+            RuleFor(x => x.Id)
+                .MustAsync(async (id, ct) =>
+                {
+                    var count = await unitOfWork.CityRepository.CountAsync();
+                    return count > 1;
+                })
+                .WithMessage("City cannot be deleted as it is the last city");
         }
     }
 
@@ -38,26 +49,16 @@ namespace AP.DemoProject.Application.CQRS.Cities
         public async Task<CityDTO> Handle(DeleteCityCommand request, CancellationToken cancellationToken)
         {
             var city = await uow.CityRepository.GetByIdAsync(request.Id);
-            if (city == null)
-            {
-                throw new KeyNotFoundException($"City with id {request.Id} not found");
-            }
-
-            var citiesAmt = await uow.CityRepository.CountAsync();
-            if (citiesAmt == 1)
-            {
-                throw new LastCityException("City cannot be deleted as it is the last city in the database");
-            }
             
             uow.CityRepository.Delete(city);
             
-            await uow.Commit();
-
             await _emailService.SendEmail(
                 "admin@email.com",
                 "City Deletion",
                 $"The city {city.Name} has been deleted."
             );
+            
+            await uow.Commit();
             
             return _mapper.Map<CityDTO>(city);
         }
