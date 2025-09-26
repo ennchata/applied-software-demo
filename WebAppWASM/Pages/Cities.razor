@@ -52,7 +52,9 @@
 	public PagedResult<CityDTO>? CitiesPage { get; set; }
 	public Dictionary<int, string> CountryNames = [];
 
-	protected override async Task OnInitializedAsync() {
+	protected override async Task OnParametersSetAsync() {
+		CountryNames.Clear();
+
 		Page ??= 1;
 		CitiesPage = await _httpClient.GetFromJsonAsync<PagedResult<CityDTO>>($"/api/city?pageNumber={Page}&pageSize=20");
 		PagedResult<CountryDTO>? countryResult = await _httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
