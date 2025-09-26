@@ -1,9 +1,7 @@
-﻿using AP.DemoProject.Application.CQRS.Cities;
-using FluentValidation.TestHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentValidation.TestHelper;
 using Moq;
-using System.Threading.Tasks;
-using AP.DemoProject.Application.Interfaces;
+using AP.BTP.Application.Interfaces;
+using AP.BTP.Application.CQRS.Cities;
 
 namespace AP.DemoProject.Application.UnitTests.CQRS.Cities
 {
