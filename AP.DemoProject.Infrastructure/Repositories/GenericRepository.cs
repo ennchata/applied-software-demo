@@ -1,4 +1,5 @@
-﻿using AP.BTP.Application.Interfaces;
+﻿using AP.BTP.Application;
+using AP.BTP.Application.Interfaces;
 using AP.DemoProject.Application;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,7 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Infrastructure.Repositories {
+namespace AP.BTP.Infrastructure.Repositories
+{
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : class {
         protected readonly DbContext _dbContext;
         protected readonly DbSet<T> _dbSet;

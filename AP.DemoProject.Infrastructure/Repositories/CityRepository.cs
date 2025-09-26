@@ -3,7 +3,6 @@ using AP.BTP.Application.Interfaces;
 using AP.BTP.Domain;
 using AP.DemoProject.Application;
 using AP.DemoProject.Infrastructure.Contexts;
-using AP.DemoProject.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

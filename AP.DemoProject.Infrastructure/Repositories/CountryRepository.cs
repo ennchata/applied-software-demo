@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Infrastructure.Repositories {
+namespace AP.BTP.Infrastructure.Repositories
+{
     public class CountryRepository : GenericRepository<Country>, ICountryRepository {
         public CountryRepository(DemoContext context) : base(context) {
             
