@@ -8,7 +8,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Infrastructure.Contexts {
+namespace AP.BTP.Infrastructure.Contexts
+{
     public class DemoContext : DbContext {
         public DemoContext(DbContextOptions<DemoContext> options) : base(options) {
 
