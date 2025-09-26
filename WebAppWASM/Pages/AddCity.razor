@@ -1,0 +1,149 @@
+@page "/cities/add"
+@using AP.DemoProject.WebApp.Models
+@inject NavigationManager NavigationManager
+@inject HttpClient httpClient
+@implements IDisposable
+
+
+<PageTitle>Add City</PageTitle>
+
+<h1>Demo Project</h1>
+<h2>Create New City</h2>
+
+<EditForm EditContext="editContext" OnValidSubmit="HandleSubmit" FormName="AddCityForm">
+	<ValidationSummary />
+
+	<div>
+		<label for="name">City Name:</label>
+		<InputText id="name" @bind-Value="Model!.Name" />
+		<ValidationMessage For="@(() => Model!.Name)" />
+	</div>
+
+	<div>
+		<label for="population">Population:</label>
+		<InputNumber id="population" @bind-Value="Model!.Population" />
+		<ValidationMessage For="@(() => Model!.Population)" />
+	</div>
+
+	<div>
+		<label for="country">Country:</label>
+		<InputSelect id="country" @bind-Value="Model!.CountryId">
+			<option value="">Select a country</option>
+			@if (countries != null)
+			{
+				@foreach (var country in countries)
+				{
+					<option value="@country.Id">@country.Name</option>
+				}
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Model!.CountryId)" />
+	</div>
+
+	<div>
+		<button type="submit">
+			<span>Create City</span>
+		</button>
+		<NavLink href="/cities">Cancel</NavLink>
+	</div>
+</EditForm>
+
+@code {
+
+	[SupplyParameterFromForm]
+	private CityCreateDTO? Model { get; set; }
+
+	private PagedResult<CountryDTO>? CountriesPage;
+	private List<CountryDTO>? countries;
+
+	private EditContext? editContext;
+	private ValidationMessageStore? messageStore;
+
+	protected override void OnInitialized()
+	{
+		Model ??= new CityCreateDTO();
+		editContext = new EditContext(Model);
+		editContext.OnValidationRequested += HandleValidationRequested;
+		editContext.OnFieldChanged += HandleFieldChanged;
+		messageStore = new ValidationMessageStore(editContext);
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			//Fetch countries here
+			CountriesPage = await httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
+			countries = CountriesPage.Data;
+
+
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error fetching countries: {ex.Message}");
+		}
+	}
+
+	private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs e)
+	{
+		Validate();
+	}
+
+	private void HandleFieldChanged(object? sender, FieldChangedEventArgs e)
+	{
+		Validate();
+	}
+
+	private void Validate()
+	{
+		messageStore?.Clear();
+
+		if (string.IsNullOrWhiteSpace(Model?.Name))
+		{
+			messageStore?.Add(() => Model!.Name, "City name is required");
+		}
+
+		if (Model?.Population <= 0)
+		{
+			messageStore?.Add(() => Model.Population, "Population must be a positive number");
+		}
+		else if (Model?.Population > 10000000)
+		{
+			messageStore?.Add(() => Model.Population, "Population cannot exceed 10,000,000");
+		}
+
+		if (countries == null)
+		{
+			messageStore?.Add(() => Model!.CountryId, "Country list could not be loaded. Please try again later.");
+		}
+		else if (!countries.Any(c => c.Id == Model!.CountryId))
+		{
+			messageStore?.Add(() => Model!.CountryId, "Please select a country");
+		}
+
+		editContext?.NotifyValidationStateChanged();
+	}
+
+	private async Task HandleSubmit()
+	{
+		try
+		{
+			//Post Model to API here
+			await httpClient.PostAsJsonAsync("/api/city", Model);
+			NavigationManager.NavigateTo("/cities", true);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Error creating city: {ex.Message}");
+		}
+	}
+
+	public void Dispose()
+	{
+		if (editContext != null)
+		{
+			editContext.OnValidationRequested -= HandleValidationRequested;
+			editContext.OnFieldChanged -= HandleFieldChanged;
+		}
+	}
+}

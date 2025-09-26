@@ -1,0 +1,64 @@
+﻿@page "/cities"
+@using AP.DemoProject.WebApp.Models
+@inject HttpClient _httpClient
+@inject NavigationManager _navigationManager;
+
+<PageTitle>Cities</PageTitle>
+
+<h1>Demo Project</h1>
+<h2>List of cities</h2>
+
+@if (CitiesPage is null) {
+	<p>Loading...</p>
+} else {
+	<table>
+		<tr>
+			<td>City Name</td>
+			<td>Population Name</td>
+			<td>Country Name</td>
+		</tr>
+		@foreach (CityDTO dto in CitiesPage.Data) {
+			<tr>
+				<td>
+					<NavLink class="text-decoration-none" href="@($"/cities/edit/{dto.Id}")">
+						@dto.Name
+					</NavLink>
+				</td>
+				<td>@dto.Population</td>
+				@if (CountryNames.TryGetValue(dto.CountryId, out string? countryName)) {
+					<td>@countryName</td>
+				} else {
+					<td>Unknown</td>
+				}
+			</tr>
+		}
+	</table>
+
+	<div>
+		@if (Page > 1) {
+			<NavLink style="padding-right: 1rem" href="@("cities?page=" + (Page - 1))">&lt;--</NavLink>
+		}
+		<span>Page @Page</span>
+		@if (Page < CitiesPage.TotalNumberOfPages) {
+			<NavLink style="padding-left: 1rem" href="@("cities?page=" + (Page + 1))">--&gt;</NavLink>
+		}
+	</div>
+}
+
+@code {
+	[Parameter]
+	[SupplyParameterFromQuery(Name = "page")]
+	public int? Page { get; set; }
+	public PagedResult<CityDTO>? CitiesPage { get; set; }
+	public Dictionary<int, string> CountryNames = [];
+
+	protected override async Task OnInitializedAsync() {
+		Page ??= 1;
+		CitiesPage = await _httpClient.GetFromJsonAsync<PagedResult<CityDTO>>($"/api/city?pageNumber={Page}&pageSize=20");
+		PagedResult<CountryDTO>? countryResult = await _httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
+
+		foreach (CountryDTO countryDTO in countryResult!.Data) {
+			CountryNames.Add(countryDTO.Id, countryDTO.Name);
+		}
+	}
+}
