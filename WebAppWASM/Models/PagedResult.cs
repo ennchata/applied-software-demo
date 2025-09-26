@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AP.DemoProject.WebApp.Models
+namespace AP.BTP.BlazorClient.Models
 {
     public class PagedResult<T>
     {

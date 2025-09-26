@@ -1,4 +1,4 @@
-namespace AP.DemoProject.WebApp.Models
+namespace AP.BTP.BlazorClient.Models
 {
     public class CountryDTO
     {
