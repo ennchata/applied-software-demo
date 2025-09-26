@@ -11,8 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\AP.DemoProject.Application\AP.BTP.Application.csproj" />
-        <ProjectReference Include="..\AP.DemoProject.Infrastructure\AP.BTP.Infrastructure.csproj" />
+        <ProjectReference Include="..\AP.BTP.Application\AP.BTP.Application.csproj" />
+        <ProjectReference Include="..\AP.BTP.Infrastructure\AP.BTP.Infrastructure.csproj" />
     </ItemGroup>
 	
 <ItemGroup>

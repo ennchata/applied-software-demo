@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AP.DemoProject.Domain\AP.BTP.Domain.csproj" />
+    <ProjectReference Include="..\AP.BTP.Domain\AP.BTP.Domain.csproj" />
   </ItemGroup>
 
 </Project>

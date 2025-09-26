@@ -19,7 +19,7 @@
 
 		<PackageReference Include="Shouldly" Version="4.2.1" />
 
-		<ProjectReference Include="..\AP.DemoProject.Application\AP.BTP.Application.csproj" />
+		<ProjectReference Include="..\AP.BTP.Application\AP.BTP.Application.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
