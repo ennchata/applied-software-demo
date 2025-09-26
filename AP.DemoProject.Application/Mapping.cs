@@ -1,6 +1,6 @@
 ﻿using AP.BTP.Application.CQRS.Cities;
+using AP.BTP.Domain;
 using AP.DemoProject.Application.CQRS.Countries;
-using AP.DemoProject.Domain;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

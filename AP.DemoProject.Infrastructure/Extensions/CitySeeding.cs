@@ -1,4 +1,4 @@
-﻿using AP.DemoProject.Domain;
+﻿using AP.BTP.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;

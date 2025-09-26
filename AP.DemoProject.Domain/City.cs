@@ -5,7 +5,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Domain {
+namespace AP.BTP.Domain
+{
     public class City {
         public int Id { get; set; }
         public string Name { get; set; }

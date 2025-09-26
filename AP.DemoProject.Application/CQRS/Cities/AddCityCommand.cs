@@ -1,5 +1,5 @@
 using AP.BTP.Application.Interfaces;
-using AP.DemoProject.Domain;
+using AP.BTP.Domain;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
