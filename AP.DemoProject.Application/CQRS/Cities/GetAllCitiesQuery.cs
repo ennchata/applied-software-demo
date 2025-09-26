@@ -1,5 +1,4 @@
 ﻿using AP.BTP.Application;
-using AP.BTP.Application.CQRS.Cities;
 using AP.BTP.Application.Interfaces;
 using AP.BTP.Domain;
 using AP.DemoProject.Application.Extensions;
@@ -11,7 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application.CQRS.Cities {
+namespace AP.BTP.Application.CQRS.Cities
+{
     public class GetAllCitiesQuery : IRequest<PagedResult<CityDTO>> {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

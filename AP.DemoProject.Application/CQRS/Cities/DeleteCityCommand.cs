@@ -1,4 +1,3 @@
-using AP.BTP.Application.CQRS.Cities;
 using AP.BTP.Application.Interfaces;
 using AP.DemoProject.Application.Exceptions;
 using AP.DemoProject.Application.Interfaces;
@@ -6,7 +5,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 
-namespace AP.DemoProject.Application.CQRS.Cities
+namespace AP.BTP.Application.CQRS.Cities
 {
     public class DeleteCityCommand : IRequest<CityDTO>
     {

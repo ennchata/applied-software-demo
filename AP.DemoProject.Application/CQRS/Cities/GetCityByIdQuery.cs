@@ -1,5 +1,4 @@
-﻿using AP.BTP.Application.CQRS.Cities;
-using AP.BTP.Application.Interfaces;
+﻿using AP.BTP.Application.Interfaces;
 using AutoMapper;
 using MediatR;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP.DemoProject.Application.CQRS.Cities
+namespace AP.BTP.Application.CQRS.Cities
 {
     public class GetCityByIdQuery : IRequest<CityDTO>
     {
