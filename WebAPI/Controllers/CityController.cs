@@ -1,6 +1,5 @@
-using AP.DemoProject.Application.CQRS.Cities;
+using AP.BTP.Application.CQRS.Cities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AP.DemoProject.WebApp.Controllers
