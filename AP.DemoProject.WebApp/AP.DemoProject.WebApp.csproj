@@ -13,9 +13,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\AP.DemoProject.Application\AP.DemoProject.Application.csproj" />
-    <ProjectReference Include="..\AP.DemoProject.Infrastructure\AP.DemoProject.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -3,17 +3,11 @@ using AP.DemoProject.Domain;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AP.DemoProject.Application.CQRS.Cities {
     public class AddCityCommand : IRequest<CityDTO> {
         
-        public City City { get; set; }
+        public CityDTO City { get; set; }
     }
 
     public class AddCityCommandValidator : AbstractValidator<AddCityCommand>
@@ -68,7 +62,7 @@ namespace AP.DemoProject.Application.CQRS.Cities {
         }
 
         public async Task<CityDTO> Handle(AddCityCommand request, CancellationToken cancellationToken) {
-            var createdCity = await _unitOfWork.CityRepository.Create(request.City);
+            var createdCity = await _unitOfWork.CityRepository.Create(_mapper.Map<City>(request.City));
             await _unitOfWork.Commit();
             return _mapper.Map<CityDTO>(createdCity);
         }

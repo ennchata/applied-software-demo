@@ -1,9 +1,4 @@
-using AP.DemoProject.Application.Extensions;
-using AP.DemoProject.Application.Interfaces;
-using AP.DemoProject.Infrastructure.Extensions;
-using AP.DemoProject.Infrastructure.Services;
 using AP.DemoProject.WebApp.Components;
-using Microsoft.AspNetCore.Components;
 
 namespace AP.DemoProject.WebApp {
     public class Program {
@@ -11,13 +6,15 @@ namespace AP.DemoProject.WebApp {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.RegisterApplication();
-            builder.Services.RegisterInfrastructure();
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
-            builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddControllers();
-            builder.Services.AddHttpClient();
+            
+            builder.WebHost.UseUrls("http://0.0.0.0:5022");
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress = new Uri("http://localhost:5000/") // WebAPI HTTP port
+            });
 
             var app = builder.Build();
 
@@ -34,7 +31,7 @@ namespace AP.DemoProject.WebApp {
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
-
+            
             app.Run();
         }
     }

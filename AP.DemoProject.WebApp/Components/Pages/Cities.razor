@@ -1,7 +1,5 @@
 ﻿@page "/cities"
-@using AP.DemoProject.Application
-@using AP.DemoProject.Application.CQRS.Cities
-@using AP.DemoProject.Application.CQRS.Countries
+@using AP.DemoProject.WebApp.Models
 @inject HttpClient _httpClient
 @inject NavigationManager _navigationManager;
 
@@ -55,7 +53,6 @@
 	public Dictionary<int, string> CountryNames = [];
 
 	protected override async Task OnInitializedAsync() {
-		_httpClient.BaseAddress = new Uri(_navigationManager.BaseUri);
 		Page ??= 1;
 		CitiesPage = await _httpClient.GetFromJsonAsync<PagedResult<CityDTO>>($"/api/city?pageNumber={Page}&pageSize=20");
 		PagedResult<CountryDTO>? countryResult = await _httpClient.GetFromJsonAsync<PagedResult<CountryDTO>>("/api/country");
