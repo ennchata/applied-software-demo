@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AP.DemoProject.Infrastructure.Services;
+using AP.BTP.Infrastructure.Repositories;
 
 namespace AP.DemoProject.Infrastructure.Extensions {
     public static class Registrator {
